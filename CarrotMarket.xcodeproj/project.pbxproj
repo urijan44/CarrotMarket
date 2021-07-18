@@ -11,6 +11,13 @@
 		8AFBF32226A4424E00261CC7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFBF32126A4424E00261CC7 /* ContentView.swift */; };
 		8AFBF32426A4424E00261CC7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8AFBF32326A4424E00261CC7 /* Assets.xcassets */; };
 		8AFBF32726A4424E00261CC7 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8AFBF32626A4424E00261CC7 /* Preview Assets.xcassets */; };
+		8AFBF33226A442D200261CC7 /* AreaCode.csv in Resources */ = {isa = PBXBuildFile; fileRef = 8AFBF33126A442D200261CC7 /* AreaCode.csv */; };
+		8AFBF33426A442EB00261CC7 /* LegalDong.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFBF33326A442EB00261CC7 /* LegalDong.swift */; };
+		8AFBF33626A4431300261CC7 /* LegalDongLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFBF33526A4431300261CC7 /* LegalDongLibrary.swift */; };
+		8AFBF33826A4433C00261CC7 /* MyAreaSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFBF33726A4433C00261CC7 /* MyAreaSetupView.swift */; };
+		8AFBF33A26A4434800261CC7 /* AreaSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFBF33926A4434800261CC7 /* AreaSearchView.swift */; };
+		8AFBF33C26A4435200261CC7 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFBF33B26A4435200261CC7 /* HeaderView.swift */; };
+		8AFBF33E26A4435E00261CC7 /* CurrentLocationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFBF33D26A4435E00261CC7 /* CurrentLocationButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +27,13 @@
 		8AFBF32326A4424E00261CC7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8AFBF32626A4424E00261CC7 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		8AFBF32826A4424E00261CC7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8AFBF33126A442D200261CC7 /* AreaCode.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AreaCode.csv; sourceTree = "<group>"; };
+		8AFBF33326A442EB00261CC7 /* LegalDong.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegalDong.swift; sourceTree = "<group>"; };
+		8AFBF33526A4431300261CC7 /* LegalDongLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegalDongLibrary.swift; sourceTree = "<group>"; };
+		8AFBF33726A4433C00261CC7 /* MyAreaSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAreaSetupView.swift; sourceTree = "<group>"; };
+		8AFBF33926A4434800261CC7 /* AreaSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AreaSearchView.swift; sourceTree = "<group>"; };
+		8AFBF33B26A4435200261CC7 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		8AFBF33D26A4435E00261CC7 /* CurrentLocationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentLocationButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,8 +66,10 @@
 		8AFBF31E26A4424E00261CC7 /* CarrotMarket */ = {
 			isa = PBXGroup;
 			children = (
+				8AFBF33026A4428A00261CC7 /* Resource */,
 				8AFBF31F26A4424E00261CC7 /* CarrotMarketApp.swift */,
-				8AFBF32126A4424E00261CC7 /* ContentView.swift */,
+				8AFBF32F26A4426B00261CC7 /* Model */,
+				8AFBF32E26A4426000261CC7 /* View */,
 				8AFBF32326A4424E00261CC7 /* Assets.xcassets */,
 				8AFBF32826A4424E00261CC7 /* Info.plist */,
 				8AFBF32526A4424E00261CC7 /* Preview Content */,
@@ -67,6 +83,35 @@
 				8AFBF32626A4424E00261CC7 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		8AFBF32E26A4426000261CC7 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8AFBF32126A4424E00261CC7 /* ContentView.swift */,
+				8AFBF33726A4433C00261CC7 /* MyAreaSetupView.swift */,
+				8AFBF33926A4434800261CC7 /* AreaSearchView.swift */,
+				8AFBF33B26A4435200261CC7 /* HeaderView.swift */,
+				8AFBF33D26A4435E00261CC7 /* CurrentLocationButton.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		8AFBF32F26A4426B00261CC7 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8AFBF33326A442EB00261CC7 /* LegalDong.swift */,
+				8AFBF33526A4431300261CC7 /* LegalDongLibrary.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		8AFBF33026A4428A00261CC7 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				8AFBF33126A442D200261CC7 /* AreaCode.csv */,
+			);
+			path = Resource;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -127,6 +172,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AFBF32726A4424E00261CC7 /* Preview Assets.xcassets in Resources */,
+				8AFBF33226A442D200261CC7 /* AreaCode.csv in Resources */,
 				8AFBF32426A4424E00261CC7 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -138,8 +184,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AFBF33826A4433C00261CC7 /* MyAreaSetupView.swift in Sources */,
 				8AFBF32226A4424E00261CC7 /* ContentView.swift in Sources */,
 				8AFBF32026A4424E00261CC7 /* CarrotMarketApp.swift in Sources */,
+				8AFBF33426A442EB00261CC7 /* LegalDong.swift in Sources */,
+				8AFBF33626A4431300261CC7 /* LegalDongLibrary.swift in Sources */,
+				8AFBF33A26A4434800261CC7 /* AreaSearchView.swift in Sources */,
+				8AFBF33E26A4435E00261CC7 /* CurrentLocationButton.swift in Sources */,
+				8AFBF33C26A4435200261CC7 /* HeaderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
