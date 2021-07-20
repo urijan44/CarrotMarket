@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct MyAreaSetupView: View {
+  @EnvironmentObject var locationStore: LocationStore
   @State var areaRange = 0.0
   @State var locateNames: [String?] = [nil, nil]
   @State var sliderChanged = false
@@ -24,16 +25,19 @@ struct MyAreaSetupView: View {
         ZStack {
           xButton
             .padding(.leading, 10)
-          HeaderView(title: "내 동네 설정하기")
+          HeaderView(title: NSLocalizedString("Set My Location", comment: "setMyLocation"))
+
         }
         .padding(5)
         Divider()
 
         //MARK: - 동네 선택 Section
         VStack {
-          Text("동네 선택")
+          Text(NSLocalizedString("Select Location", comment: "selectLocation"))
+//          Text("동네 선택하기")
             .padding(.bottom, 5)
-          Text("지역은 최소 1개 이상 최대 2개까지 설정 가능해요.")
+            Text(NSLocalizedString("A minimum of 1 and a maximum of 2 regions are allowed.", comment: "min1max2"))
+//          Text("지역은 최소 1개 이상 최대 2개까지 설정 가능해요.")
             .font(.caption)
             .foregroundColor(.secondary)
             .padding(.bottom, 3)
@@ -43,7 +47,7 @@ struct MyAreaSetupView: View {
               ZStack {
                 HStack {
                   Button {
-                    selectedLocateName = locateNames[0]
+                    locationStore.setSelectedLocation(locateNames[0])
                     isSelected = true
                   } label: {
                     HStack {
@@ -68,7 +72,8 @@ struct MyAreaSetupView: View {
             // right button
             if locateNames[1] != nil {
               Button {
-                selectedLocateName = locateNames[1]
+//                selectedLocateName = locateNames[1]
+                locationStore.setSelectedLocation(locateNames[1])
                 isSelected = true
               } label: {
                 HStack {
@@ -91,14 +96,16 @@ struct MyAreaSetupView: View {
 
           //MARK: - 동네 범위 Section
           HStack {
-            Text("\(selectedLocateName ?? "")")
+            Text("\(locationStore.selectedLocation)")
               .padding(.trailing, 1)
-            Text("근처 동네 6개")
+              Text(NSLocalizedString("Near Location", comment: "neighborhood"))
+//            Text("근처 동네 6개")
               .fontWeight(.bold)
               .underline()
           }
           .padding(.bottom, 5)
-          Text("선택한 범위의 게시물만 볼 수 있어요.")
+//          Text("선택한 범위의 게시물만 볼 수 있어요.")
+          Text(NSLocalizedString("You can see only the selected range of posts.", comment: "readRange"))
             .font(.caption)
             .foregroundColor(.secondary)
           VStack {
@@ -108,9 +115,11 @@ struct MyAreaSetupView: View {
               .animation(.easeOut)
 
             HStack {
-              Text("내 동네")
+              Text(NSLocalizedString("My Location", comment: "mylocation"))
+//              Text("내 동네")
               Spacer()
-              Text("근처동네")
+              Text(NSLocalizedString("Near Location", comment: "neighborhood"))
+//              Text("근처동네")
             }
             .font(.caption)
             .foregroundColor(.gray)
@@ -184,17 +193,21 @@ private struct RemoveLocateButton: View {
 
   var alertTitle: String {
     if locateIsOne {
-      return "동네가 1개만 선택된 상태에서는 삭제를 할 수 없어요. 현재 설정된 동네를 변경하시겠어요?"
+      //"동네가 1개만 선택된 상태에서는 삭제를 할 수 없어요. 현재 설정된 동네를 변경하시겠어요?"
+      return NSLocalizedString("If only one location is selected, it cannot be deleted. Would you like to change the currently set location?", comment: "lastOne")
     } else {
-      return "선택한 지역을 삭제하시겠습니까?"
+      // "선택한 지역을 삭제하시겠습니까?"
+      return NSLocalizedString("Are you sure you want to delete the selected region?", comment: "okQ")
     }
   }
 
   var secondaryButtonAction: String {
     if locateIsOne {
-      return "변경"
+      //변경
+      return NSLocalizedString("Change", comment: "change")
     } else {
-      return "확인"
+//      확인
+      return NSLocalizedString("Conform", comment: "conform")
     }
   }
 
@@ -206,7 +219,6 @@ private struct RemoveLocateButton: View {
       return action
     } else {
       func action() {
-        print("선택된 지역 삭제하기")
         if index == 1 {
           if locateName == selectedLocateName {
             selectedLocateName = locateNames[0]
@@ -233,7 +245,7 @@ private struct RemoveLocateButton: View {
       Alert(
         title: Text(alertTitle),
         primaryButton:
-            .cancel(Text("취소")),
+            .cancel(Text(NSLocalizedString("Cancel", comment: "cancel"))),
         secondaryButton:
             .default(Text(secondaryButtonAction), action: {
               okAction()
@@ -320,5 +332,6 @@ struct SliderView: View {
 struct MyAreaSetupView_Previews: PreviewProvider {
   static var previews: some View {
     MyAreaSetupView()
+      .environmentObject(LocationStore())
   }
 }

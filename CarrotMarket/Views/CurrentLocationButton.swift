@@ -13,7 +13,8 @@ struct CurrentLocationButton: View {
   var body: some View {
     Button {
     } label: {
-      Text("현재위치로 찾기")
+      //현재위치로 찾기
+      Text(NSLocalizedString("Search by current location", comment: "searchCurrentLocation"))
     }
     .buttonStyle(CurrentLocationButtonStyle())
   }

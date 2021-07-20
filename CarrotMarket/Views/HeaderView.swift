@@ -19,7 +19,7 @@ struct HeaderView: View {
 
 struct HeaderView_Previews: PreviewProvider {
   static var previews: some View {
-    HeaderView(title: "내 동네 설정하기")
+    HeaderView(title: NSLocalizedString("Set My Location", comment: "setMyLocation"))
       .previewLayout(.sizeThatFits)
   }
 }

@@ -10,6 +10,7 @@ import Foundation
 //행정코드, 시, 구, 동(읍면)
 
 class Legal {
+  var id = UUID()
   var hcode: String = ""
   var city: String = ""
   var gu: String = ""
