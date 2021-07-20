@@ -9,12 +9,11 @@ import SwiftUI
 
 struct AreaSearchView: View {
   @Environment(\.presentationMode) var presentationMode
-  @Binding var locateName: String?
-  @Binding var selectedLocate: String?
-  @Binding var locateNames: [String?]
+  @EnvironmentObject var locationStore: LocationStore
   @State var showDuplicatedLocate: Bool = false
   let legal = LegalDongLibrary()
   @State var maxRange: Int = 20000
+  var index: Int
 
   var nextLocateID: UUID {
     guard let locate = legal.legal.first else {
@@ -48,11 +47,12 @@ struct AreaSearchView: View {
             }
             .contentShape(Rectangle())
             .onTapGesture(perform: {
-              if locateNames.contains(area.dong) {
+              if locationStore.storedLocate.contains(area.dong) {
                 showDuplicatedLocate = true
               } else {
-                locateName = area.dong
-                selectedLocate = locateName
+                locationStore.setIndicator(area.dong)
+                locationStore.setStoredLocate(area.dong, index)
+                locationStore.setSelectedLocation(locationStore.buttonIndicator)
               }
               presentationMode.wrappedValue.dismiss()
             })
@@ -80,6 +80,7 @@ struct AreaSearchView: View {
 
 struct AreaSearchView_Previews: PreviewProvider {
   static var previews: some View {
-    AreaSearchView(locateName: .constant(nil), selectedLocate: .constant(nil), locateNames: .constant([nil]))
+    AreaSearchView(index: 0)
+      .environmentObject(LocationStore())
   }
 }

@@ -10,11 +10,7 @@ import SwiftUI
 struct MyAreaSetupView: View {
   @EnvironmentObject var locationStore: LocationStore
   @State var areaRange = 0.0
-  @State var locateNames: [String?] = [nil, nil]
   @State var sliderChanged = false
-  @State var selectedLocateName: String?
-  @State var buttonIndex = 0
-  @State var isSelected: Bool = false
   @State var showAreaSearch: Bool = false
   @Environment(\.presentationMode) var presentationMode
 
@@ -43,49 +39,48 @@ struct MyAreaSetupView: View {
             .padding(.bottom, 3)
           HStack {
             // left button
-            if locateNames[0] != nil {
+            if locationStore.storedLocate[0] != nil {
               ZStack {
                 HStack {
                   Button {
-                    locationStore.setSelectedLocation(locateNames[0])
-                    isSelected = true
+                    locationStore.setSelectedLocation(locationStore.storedLocate[0])
+                    locationStore.setIndicator(locationStore.selectedLocation)
                   } label: {
                     HStack {
-                      Text("\(locateNames[0] ?? "")")
+                      Text("\(locationStore.storedLocate[0] ?? "")")
                       Spacer()
-                      RemoveLocateButton(locateName: $locateNames[0], locateNames: $locateNames, selectedLocateName: $selectedLocateName, showAreaSearch: $showAreaSearch, index: 0)
+                      RemoveLocateButton(showAreaSearch: $showAreaSearch, index: 0)
                     }
                   }
-                  .buttonStyle(PlaceButtonStyle(selectedLocateName: $selectedLocateName, locateName: $locateNames[0], locateNames: $locateNames, index: 0))
+                  .buttonStyle(PlaceButtonStyle(index: 0))
                 }
               }
             } else {
               NavigationLink(
-                destination: AreaSearchView(locateName: $locateNames[0], selectedLocate: $selectedLocateName, locateNames: $locateNames),
+                destination: AreaSearchView(index: 0),
                 label: {
                   EmptyLocateView()
                 })
               .fullScreenCover(isPresented: $showAreaSearch) {
-                AreaSearchView(locateName: $locateNames[0], selectedLocate: $selectedLocateName, locateNames: $locateNames)
+                AreaSearchView(index: 0)
               }
             }
             // right button
-            if locateNames[1] != nil {
+            if locationStore.storedLocate[1] != nil {
               Button {
-//                selectedLocateName = locateNames[1]
-                locationStore.setSelectedLocation(locateNames[1])
-                isSelected = true
+                locationStore.setSelectedLocation(locationStore.storedLocate[1])
+                locationStore.setIndicator(locationStore.selectedLocation)
               } label: {
                 HStack {
-                  Text("\(locateNames[1] ?? "")")
+                  Text("\(locationStore.storedLocate[1] ?? "")")
                   Spacer()
-                  RemoveLocateButton(locateName: $locateNames[1], locateNames: $locateNames, selectedLocateName: $selectedLocateName, showAreaSearch: $showAreaSearch, index: 1)
+                  RemoveLocateButton(showAreaSearch: $showAreaSearch, index: 1)
                 }
               }
-              .buttonStyle(PlaceButtonStyle(selectedLocateName: $selectedLocateName, locateName: $locateNames[1], locateNames: $locateNames, index: 1))
+              .buttonStyle(PlaceButtonStyle(index: 1))
             } else {
               NavigationLink(
-                destination: AreaSearchView(locateName: $locateNames[1], selectedLocate: $selectedLocateName, locateNames: $locateNames),
+                destination: AreaSearchView(index: 1),
                 label: {
                 EmptyLocateView()
               })
@@ -96,7 +91,7 @@ struct MyAreaSetupView: View {
 
           //MARK: - 동네 범위 Section
           HStack {
-            Text("\(locationStore.selectedLocation)")
+              Text("\(locationStore.selectedLocation)")
               .padding(.trailing, 1)
               Text(NSLocalizedString("Near Location", comment: "neighborhood"))
 //            Text("근처 동네 6개")
@@ -135,12 +130,12 @@ struct MyAreaSetupView: View {
         .padding()
       }
       .onAppear(perform: {
-        if selectedLocateName == nil {
+        if locationStore.selectedLocation.isEmpty {
           showAreaSearch.toggle()
         }
       })
       .fullScreenCover(isPresented: $showAreaSearch) {
-        AreaSearchView(locateName: $locateNames[0], selectedLocate: $selectedLocateName, locateNames: $locateNames)
+        AreaSearchView(index: 0)
       }
       .navigationBarHidden(true)
     }
@@ -160,12 +155,10 @@ struct MyAreaSetupView: View {
 }
 
 private struct PlaceButtonStyle: ButtonStyle {
-  @Binding var selectedLocateName: String?
-  @Binding var locateName: String?
-  @Binding var locateNames: [String?]
+  @EnvironmentObject var locationStore: LocationStore
   let index: Int
   func makeBody(configuration: Configuration) -> some View {
-    let isSelected = selectedLocateName == locateName
+    let isSelected = locationStore.selectedLocation == locationStore.storedLocate[index]
     HStack {
       configuration.label
       Spacer()
@@ -178,16 +171,33 @@ private struct PlaceButtonStyle: ButtonStyle {
   }
 }
 
+private extension View {
+  func buttonPress(_ isPressed: Bool) -> some View {
+    self.background(
+      !isPressed ? AnyView(normal()) : AnyView(pressed())
+    )
+  }
+
+  func normal() -> some View {
+    RoundedRectangle(cornerRadius: 5)
+      .stroke(Color.gray.opacity(0.5), lineWidth: 2)
+      .foregroundColor(.clear)
+  }
+
+  func pressed() -> some View {
+    RoundedRectangle(cornerRadius: 5)
+      .foregroundColor(Color.orange)
+  }
+}
+
 private struct RemoveLocateButton: View {
+  @EnvironmentObject var locationStore: LocationStore
   @State private var showAlert = false
-  @Binding var locateName: String?
-  @Binding var locateNames: [String?]
-  @Binding var selectedLocateName: String?
   @Binding var showAreaSearch: Bool
   let index: Int
 
   var locateIsOne: Bool {
-    let nonNil = locateNames.filter { $0 != nil }.count
+    let nonNil = locationStore.storedLocate.filter { $0 != nil }.count
     return nonNil == 1
   }
 
@@ -220,16 +230,16 @@ private struct RemoveLocateButton: View {
     } else {
       func action() {
         if index == 1 {
-          if locateName == selectedLocateName {
-            selectedLocateName = locateNames[0]
-            locateName = selectedLocateName
+          if locationStore.buttonIndicator == locationStore.selectedLocation {
+            locationStore.setSelectedLocation(locationStore.storedLocate[0])
+            locationStore.buttonIndicator = locationStore.selectedLocation
           }
         } else {
-          locateName = locateNames[1]
-          selectedLocateName = locateName
-          locateNames[0] = locateName
+          locationStore.setIndicator(locationStore.storedLocate[1])
+          locationStore.setSelectedLocation(locationStore.buttonIndicator)
+          locationStore.setStoredLocate(locationStore.buttonIndicator, 0)
         }
-        locateNames[1] = nil
+        locationStore.setStoredLocate(nil, 1)
       }
       return action
     }
@@ -255,25 +265,6 @@ private struct RemoveLocateButton: View {
   }
 }
 
-private extension View {
-  func buttonPress(_ isPressed: Bool) -> some View {
-    self.background(
-      !isPressed ? AnyView(normal()) : AnyView(pressed())
-    )
-  }
-
-  func normal() -> some View {
-    RoundedRectangle(cornerRadius: 5)
-      .stroke(Color.gray.opacity(0.5), lineWidth: 2)
-      .foregroundColor(.clear)
-  }
-
-
-  func pressed() -> some View {
-    RoundedRectangle(cornerRadius: 5)
-      .foregroundColor(Color.orange)
-  }
-}
 
 
 //MARK: - Show AreaSearchView
@@ -289,27 +280,6 @@ struct EmptyLocateView: View {
         .foregroundColor(.clear)
     }
     .frame(height: buttonHeight)
-  }
-}
-
-struct locateSelectButton: View {
-  @State var showAreaSearch: Bool = false
-  @Binding var locateName: String?
-  @Binding var selectedLocateName: String?
-  var index: Int
-  var body: some View {
-    Button {
-
-    } label: {
-      ZStack {
-        Image(systemName: "plus")
-          .foregroundColor(.gray)
-        RoundedRectangle(cornerRadius: 5)
-          .stroke(Color.gray.opacity(0.5), lineWidth: 2)
-          .foregroundColor(.clear)
-      }
-      .frame(height: buttonHeight)
-    }
   }
 }
 
