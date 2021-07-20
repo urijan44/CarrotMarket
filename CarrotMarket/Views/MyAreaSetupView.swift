@@ -14,6 +14,35 @@ struct MyAreaSetupView: View {
   @State var showAreaSearch: Bool = false
   @Environment(\.presentationMode) var presentationMode
 
+  @ViewBuilder fileprivate func lrLocationSelectButton(index: Int) -> some View {
+    if locationStore.storedLocate[index] != nil {
+      ZStack {
+        HStack {
+          Button {
+            locationStore.setSelectedLocation(locationStore.storedLocate[index])
+            locationStore.setIndicator(locationStore.selectedLocation)
+          } label: {
+            HStack {
+              Text("\(locationStore.storedLocate[index] ?? "")")
+              Spacer()
+              RemoveLocateButton(showAreaSearch: $showAreaSearch, index: index)
+            }
+          }
+          .buttonStyle(PlaceButtonStyle(index: index))
+        }
+      }
+    } else {
+      NavigationLink(
+        destination: AreaSearchView(index: index),
+        label: {
+          EmptyLocateView()
+        })
+        .fullScreenCover(isPresented: $showAreaSearch) {
+          AreaSearchView(index: index)
+        }
+    }
+  }
+
   var body: some View {
     NavigationView {
       VStack {
@@ -38,53 +67,8 @@ struct MyAreaSetupView: View {
             .foregroundColor(.secondary)
             .padding(.bottom, 3)
           HStack {
-            // left button
-            if locationStore.storedLocate[0] != nil {
-              ZStack {
-                HStack {
-                  Button {
-                    locationStore.setSelectedLocation(locationStore.storedLocate[0])
-                    locationStore.setIndicator(locationStore.selectedLocation)
-                  } label: {
-                    HStack {
-                      Text("\(locationStore.storedLocate[0] ?? "")")
-                      Spacer()
-                      RemoveLocateButton(showAreaSearch: $showAreaSearch, index: 0)
-                    }
-                  }
-                  .buttonStyle(PlaceButtonStyle(index: 0))
-                }
-              }
-            } else {
-              NavigationLink(
-                destination: AreaSearchView(index: 0),
-                label: {
-                  EmptyLocateView()
-                })
-              .fullScreenCover(isPresented: $showAreaSearch) {
-                AreaSearchView(index: 0)
-              }
-            }
-            // right button
-            if locationStore.storedLocate[1] != nil {
-              Button {
-                locationStore.setSelectedLocation(locationStore.storedLocate[1])
-                locationStore.setIndicator(locationStore.selectedLocation)
-              } label: {
-                HStack {
-                  Text("\(locationStore.storedLocate[1] ?? "")")
-                  Spacer()
-                  RemoveLocateButton(showAreaSearch: $showAreaSearch, index: 1)
-                }
-              }
-              .buttonStyle(PlaceButtonStyle(index: 1))
-            } else {
-              NavigationLink(
-                destination: AreaSearchView(index: 1),
-                label: {
-                EmptyLocateView()
-              })
-            }
+            lrLocationSelectButton(index: 0)
+            lrLocationSelectButton(index: 1)
           }
           Divider()
             .padding(5)
@@ -265,12 +249,10 @@ private struct RemoveLocateButton: View {
   }
 }
 
-
-
 //MARK: - Show AreaSearchView
 private var buttonHeight: CGFloat = 45
 
-struct EmptyLocateView: View {
+private struct EmptyLocateView: View {
   var body: some View {
     ZStack {
       Image(systemName: "plus")
@@ -283,7 +265,7 @@ struct EmptyLocateView: View {
   }
 }
 
-struct SliderView: View {
+private struct SliderView: View {
   @Binding var sliderValue: Double
   @Binding var sliderChanged: Bool
   var body: some View {
