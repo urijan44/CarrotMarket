@@ -9,10 +9,11 @@ import SwiftUI
 
 @main
 struct CarrotMarketApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-              .environmentObject(LocationStore())
-        }
+  var body: some Scene {
+    WindowGroup {
+      ContentView()
+        .environmentObject(LocationStore())
+        .environmentObject(LegalDongLibrary())
     }
+  }
 }

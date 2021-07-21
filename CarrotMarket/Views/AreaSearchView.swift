@@ -11,10 +11,11 @@ struct AreaSearchView: View {
   @Environment(\.presentationMode) var presentationMode
   @EnvironmentObject var locationStore: LocationStore
   @State var showDuplicatedLocate: Bool = false
-  let legal = LegalDongLibrary()
-  @State var maxRange: Int = 20000
+  @State var showEmptyLocation: Bool = false
+  @EnvironmentObject var legal: LegalDongLibrary
+  @State var maxRange: Int = 100
+  @Binding var setToIndexZero: Bool
   var index: Int
-
   var nextLocateID: UUID {
     guard let locate = legal.legal.first else {
       return legal.legal.last!.id
@@ -26,10 +27,17 @@ struct AreaSearchView: View {
     VStack {
       HStack {
         Button {
-          presentationMode.wrappedValue.dismiss()
+          if locationStore.selectedLocation.isEmpty {
+            showEmptyLocation.toggle()
+          } else {
+            presentationMode.wrappedValue.dismiss()
+          }
         } label: {
           Image(systemName: "arrow.backward")
         }
+        .alert(isPresented: $showEmptyLocation, content: {
+          Alert(title: Text(NSLocalizedString("You must select at least 1 location.", comment: "emptyLocation")))
+        })
         .foregroundColor(.black)
         Spacer()
         Text("검색 필드")
@@ -51,7 +59,11 @@ struct AreaSearchView: View {
                 showDuplicatedLocate = true
               } else {
                 locationStore.setIndicator(area.dong)
-                locationStore.setStoredLocate(area.dong, index)
+                if setToIndexZero {
+                  locationStore.setStoredLocate(area.dong, 0)
+                } else {
+                  locationStore.setStoredLocate(area.dong, index)
+                }
                 locationStore.setSelectedLocation(locationStore.buttonIndicator)
               }
               presentationMode.wrappedValue.dismiss()
@@ -80,7 +92,8 @@ struct AreaSearchView: View {
 
 struct AreaSearchView_Previews: PreviewProvider {
   static var previews: some View {
-    AreaSearchView(index: 0)
+    AreaSearchView(setToIndexZero: .constant(true), index: 0)
       .environmentObject(LocationStore())
+      .environmentObject(LegalDongLibrary())
   }
 }

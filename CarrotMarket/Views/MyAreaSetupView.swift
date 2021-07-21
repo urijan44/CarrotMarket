@@ -13,6 +13,7 @@ struct MyAreaSetupView: View {
   @State var sliderChanged = false
   @State var showAreaSearch: Bool = false
   @Environment(\.presentationMode) var presentationMode
+  @State var setToIndexZero: Bool = false
 
   @ViewBuilder fileprivate func lrLocationSelectButton(index: Int) -> some View {
     if locationStore.storedLocate[index] != nil {
@@ -25,7 +26,7 @@ struct MyAreaSetupView: View {
             HStack {
               Text("\(locationStore.storedLocate[index] ?? "")")
               Spacer()
-              RemoveLocateButton(showAreaSearch: $showAreaSearch, index: index)
+              RemoveLocateButton(showAreaSearch: $showAreaSearch, setIndexZero: $setToIndexZero, index: index)
             }
           }
           .buttonStyle(PlaceButtonStyle(index: index))
@@ -33,12 +34,12 @@ struct MyAreaSetupView: View {
       }
     } else {
       NavigationLink(
-        destination: AreaSearchView(index: index),
+        destination: AreaSearchView(setToIndexZero: $setToIndexZero, index: index),
         label: {
           EmptyLocateView()
         })
         .fullScreenCover(isPresented: $showAreaSearch) {
-          AreaSearchView(index: index)
+          AreaSearchView(setToIndexZero: $setToIndexZero, index: index)
         }
     }
   }
@@ -119,7 +120,7 @@ struct MyAreaSetupView: View {
         }
       })
       .fullScreenCover(isPresented: $showAreaSearch) {
-        AreaSearchView(index: 0)
+        AreaSearchView(setToIndexZero: $setToIndexZero, index: 0)
       }
       .navigationBarHidden(true)
     }
@@ -155,6 +156,7 @@ private struct PlaceButtonStyle: ButtonStyle {
   }
 }
 
+// buttonPress 상태에 따라 다른 뷰를 반환합니다. 투명 배경, 오렌지 배경
 private extension View {
   func buttonPress(_ isPressed: Bool) -> some View {
     self.background(
@@ -178,7 +180,8 @@ private struct RemoveLocateButton: View {
   @EnvironmentObject var locationStore: LocationStore
   @State private var showAlert = false
   @Binding var showAreaSearch: Bool
-  let index: Int
+  @Binding var setIndexZero: Bool
+  var index: Int
 
   var locateIsOne: Bool {
     let nonNil = locationStore.storedLocate.filter { $0 != nil }.count
@@ -208,6 +211,7 @@ private struct RemoveLocateButton: View {
   var okAction: () -> Void {
     if locateIsOne {
       func action() {
+        setIndexZero = true
         showAreaSearch.toggle()
       }
       return action
@@ -249,7 +253,7 @@ private struct RemoveLocateButton: View {
   }
 }
 
-//MARK: - Show AreaSearchView
+//MARK: - EmptyButton
 private var buttonHeight: CGFloat = 45
 
 private struct EmptyLocateView: View {

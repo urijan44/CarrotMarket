@@ -6,11 +6,29 @@
 //
 
 import Foundation
+import SwiftUI
+
+enum FileError: Error {
+  case loadFailure
+  case saveFailure
+  case urlFailure
+}
 
 class LocationStore: ObservableObject {
-  @Published var selectedLocation: String = ""
+  @AppStorage("selectedLocation") var selectedLocation: String = ""
   @Published var storedLocate: [String?] = [nil, nil]
-  @Published var buttonIndicator: String = ""
+  @AppStorage("leftStored") var left: String = ""
+  @AppStorage("rightStored") var right: String = ""
+  @AppStorage("buttonIndicator")var buttonIndicator: String = ""
+
+  init() {
+    if !left.isEmpty {
+      storedLocate[0] = left
+    }
+    if !right.isEmpty  {
+      storedLocate[1] = right
+    }
+  }
 
   func setSelectedLocation(_ locate: String?) {
     guard let locate = locate else {
@@ -24,6 +42,11 @@ class LocationStore: ObservableObject {
       return
     }
     storedLocate[index] = locate
+    if index == 0 {
+      left = locate ?? ""
+    } else {
+      right = locate ?? ""
+    }
   }
 
   func setIndicator(_ locate: String?) {

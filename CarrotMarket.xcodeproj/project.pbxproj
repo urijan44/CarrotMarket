@@ -10,6 +10,7 @@
 		8A6E198426A5AF4600E169C1 /* AreaCode 복사본.csv in Resources */ = {isa = PBXBuildFile; fileRef = 8A6E198326A5AF4600E169C1 /* AreaCode 복사본.csv */; };
 		8A6E198C26A5DD6500E169C1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8A6E198E26A5DD6500E169C1 /* Localizable.strings */; };
 		8A70470726A6DAF9007AED77 /* LocationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A70470626A6DAF9007AED77 /* LocationStore.swift */; };
+		8A84519026A8219B0025573B /* LocationStoreDevData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A84518F26A8219B0025573B /* LocationStoreDevData.swift */; };
 		8AFBF32026A4424E00261CC7 /* CarrotMarketApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFBF31F26A4424E00261CC7 /* CarrotMarketApp.swift */; };
 		8AFBF32226A4424E00261CC7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFBF32126A4424E00261CC7 /* ContentView.swift */; };
 		8AFBF32426A4424E00261CC7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8AFBF32326A4424E00261CC7 /* Assets.xcassets */; };
@@ -28,6 +29,7 @@
 		8A6E198326A5AF4600E169C1 /* AreaCode 복사본.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "AreaCode 복사본.csv"; sourceTree = "<group>"; };
 		8A6E198D26A5DD6500E169C1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8A70470626A6DAF9007AED77 /* LocationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationStore.swift; sourceTree = "<group>"; };
+		8A84518F26A8219B0025573B /* LocationStoreDevData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationStoreDevData.swift; sourceTree = "<group>"; };
 		8AFBF31C26A4424E00261CC7 /* CarrotMarket.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CarrotMarket.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AFBF31F26A4424E00261CC7 /* CarrotMarketApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarrotMarketApp.swift; sourceTree = "<group>"; };
 		8AFBF32126A4424E00261CC7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -73,7 +75,6 @@
 		8AFBF31E26A4424E00261CC7 /* CarrotMarket */ = {
 			isa = PBXGroup;
 			children = (
-				8AFBF33026A4428A00261CC7 /* Resource */,
 				8AFBF31F26A4424E00261CC7 /* CarrotMarketApp.swift */,
 				8AFBF32F26A4426B00261CC7 /* Model */,
 				8AFBF32E26A4426000261CC7 /* Views */,
@@ -89,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				8AFBF32626A4424E00261CC7 /* Preview Assets.xcassets */,
+				8A84518F26A8219B0025573B /* LocationStoreDevData.swift */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
@@ -101,6 +103,7 @@
 				8AFBF33926A4434800261CC7 /* AreaSearchView.swift */,
 				8AFBF33B26A4435200261CC7 /* HeaderView.swift */,
 				8AFBF33D26A4435E00261CC7 /* CurrentLocationButton.swift */,
+				8AFBF33026A4428A00261CC7 /* Resource */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -205,6 +208,7 @@
 				8AFBF33A26A4434800261CC7 /* AreaSearchView.swift in Sources */,
 				8AFBF33E26A4435E00261CC7 /* CurrentLocationButton.swift in Sources */,
 				8AFBF33C26A4435200261CC7 /* HeaderView.swift in Sources */,
+				8A84519026A8219B0025573B /* LocationStoreDevData.swift in Sources */,
 				8A70470726A6DAF9007AED77 /* LocationStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

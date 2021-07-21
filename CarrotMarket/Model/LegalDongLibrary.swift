@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct LegalDongLibrary {
+class LegalDongLibrary: ObservableObject {
   var legal: [Legal] {
     let csvName = "AreaCode"
     var csvToStruct: [Legal] = []
