@@ -11,6 +11,8 @@
 		8A6E198C26A5DD6500E169C1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8A6E198E26A5DD6500E169C1 /* Localizable.strings */; };
 		8A70470726A6DAF9007AED77 /* LocationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A70470626A6DAF9007AED77 /* LocationStore.swift */; };
 		8A84519026A8219B0025573B /* LocationStoreDevData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A84518F26A8219B0025573B /* LocationStoreDevData.swift */; };
+		8ADD1BE726AD3518001F6178 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADD1BE626AD3518001F6178 /* LocationManager.swift */; };
+		8ADD1BE926AD61A6001F6178 /* LocationQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADD1BE826AD61A6001F6178 /* LocationQuery.swift */; };
 		8AFBF32026A4424E00261CC7 /* CarrotMarketApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFBF31F26A4424E00261CC7 /* CarrotMarketApp.swift */; };
 		8AFBF32226A4424E00261CC7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFBF32126A4424E00261CC7 /* ContentView.swift */; };
 		8AFBF32426A4424E00261CC7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8AFBF32326A4424E00261CC7 /* Assets.xcassets */; };
@@ -30,6 +32,8 @@
 		8A6E198D26A5DD6500E169C1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8A70470626A6DAF9007AED77 /* LocationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationStore.swift; sourceTree = "<group>"; };
 		8A84518F26A8219B0025573B /* LocationStoreDevData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationStoreDevData.swift; sourceTree = "<group>"; };
+		8ADD1BE626AD3518001F6178 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		8ADD1BE826AD61A6001F6178 /* LocationQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationQuery.swift; sourceTree = "<group>"; };
 		8AFBF31C26A4424E00261CC7 /* CarrotMarket.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CarrotMarket.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AFBF31F26A4424E00261CC7 /* CarrotMarketApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarrotMarketApp.swift; sourceTree = "<group>"; };
 		8AFBF32126A4424E00261CC7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -76,8 +80,8 @@
 			isa = PBXGroup;
 			children = (
 				8AFBF31F26A4424E00261CC7 /* CarrotMarketApp.swift */,
-				8AFBF32F26A4426B00261CC7 /* Model */,
 				8AFBF32E26A4426000261CC7 /* Views */,
+				8AFBF32F26A4426B00261CC7 /* Model */,
 				8AFBF32326A4424E00261CC7 /* Assets.xcassets */,
 				8AFBF32826A4424E00261CC7 /* Info.plist */,
 				8AFBF32526A4424E00261CC7 /* Preview Content */,
@@ -114,6 +118,8 @@
 				8AFBF33326A442EB00261CC7 /* LegalDong.swift */,
 				8AFBF33526A4431300261CC7 /* LegalDongLibrary.swift */,
 				8A70470626A6DAF9007AED77 /* LocationStore.swift */,
+				8ADD1BE626AD3518001F6178 /* LocationManager.swift */,
+				8ADD1BE826AD61A6001F6178 /* LocationQuery.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -203,7 +209,9 @@
 				8AFBF33826A4433C00261CC7 /* MyAreaSetupView.swift in Sources */,
 				8AFBF32226A4424E00261CC7 /* ContentView.swift in Sources */,
 				8AFBF32026A4424E00261CC7 /* CarrotMarketApp.swift in Sources */,
+				8ADD1BE726AD3518001F6178 /* LocationManager.swift in Sources */,
 				8AFBF33426A442EB00261CC7 /* LegalDong.swift in Sources */,
+				8ADD1BE926AD61A6001F6178 /* LocationQuery.swift in Sources */,
 				8AFBF33626A4431300261CC7 /* LegalDongLibrary.swift in Sources */,
 				8AFBF33A26A4434800261CC7 /* AreaSearchView.swift in Sources */,
 				8AFBF33E26A4435E00261CC7 /* CurrentLocationButton.swift in Sources */,

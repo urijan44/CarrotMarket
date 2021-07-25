@@ -6,12 +6,19 @@
 //
 
 import SwiftUI
+import CoreLocation
 
 private var buttonHeight: CGFloat = 35
 
 struct CurrentLocationButton: View {
+
+  @StateObject var locationManager = LocationManager()
+  @Binding var currentLocation: CLLocation?
+
   var body: some View {
     Button {
+      locationManager.startLocationServices()
+      currentLocation = locationManager.currentLocation
     } label: {
       //현재위치로 찾기
       Text(NSLocalizedString("Search by current location", comment: "searchCurrentLocation"))
@@ -58,7 +65,7 @@ private extension View {
 
 struct CurrentLocationButton_Previews: PreviewProvider {
   static var previews: some View {
-    CurrentLocationButton()
+    CurrentLocationButton(currentLocation: .constant(nil))
       .previewLayout(.sizeThatFits)
   }
 }

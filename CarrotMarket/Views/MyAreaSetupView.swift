@@ -25,7 +25,6 @@ struct MyAreaSetupView: View {
           } label: {
             HStack {
               VStack {
-                Text("\(index)")
                 Text("\(locationStore.storedLocate[index] ?? "")")
               }
               Spacer()

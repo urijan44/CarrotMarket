@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreLocation
 
 struct AreaSearchView: View {
   @Environment(\.presentationMode) var presentationMode
@@ -15,6 +16,8 @@ struct AreaSearchView: View {
   @EnvironmentObject var legal: LegalDongLibrary
   @State var maxRange: Int = 100
   @Binding var setToIndexZero: Bool
+  @State var searchQuery: String = ""
+  @State var currentLocation: CLLocation?
   var index: Int
   var nextLocateID: UUID {
     guard let locate = legal.legal.first else {
@@ -39,16 +42,24 @@ struct AreaSearchView: View {
           Alert(title: Text(NSLocalizedString("You must select at least 1 location.", comment: "emptyLocation")))
         })
         .foregroundColor(.black)
-        Spacer()
-        Text("검색 필드")
+        HStack {
+          Image(systemName: "magnifyingglass")
+          TextField("Search", text: $searchQuery)
+        }
+        .underlineTextField()
       }
       .padding([.leading, .trailing], 10)
-      CurrentLocationButton()
-        .padding()
+      Button {
+        print("find address")
+      } label: {
+        CurrentLocationButton(currentLocation: $currentLocation)
+          .padding()
+      }
       HStack {
         Text(NSLocalizedString("Near Location", comment: "neighborhood"))
         #if DEBUG
-        Text("target index: \(index)")
+//        Text("target index: \(index)")
+        Text("coordinate: \(currentLocation?.coordinate.latitude ?? CLLocation().coordinate.latitude)")
         #endif
       }
       ScrollViewReader { scrollProxy in
@@ -83,7 +94,6 @@ struct AreaSearchView: View {
           }
         }
         .onAppear {
-          print("page index: \(index)")
           DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
             scrollProxy.scrollTo(nextLocateID)
           }
@@ -95,6 +105,15 @@ struct AreaSearchView: View {
   }
 }
 
+extension View {
+  func underlineTextField() -> some View {
+    self
+      .padding(.vertical, 10)
+      .overlay(Rectangle().frame(height: 2).padding(.top, 35))
+      .foregroundColor(.secondary)
+      .padding(10)
+  }
+}
 
 
 struct AreaSearchView_Previews: PreviewProvider {
