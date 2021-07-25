@@ -12,10 +12,10 @@ struct MyAreaSetupView: View {
   @State var areaRange = 0.0
   @State var sliderChanged = false
   @State var showAreaSearch: Bool = false
+  @State var lastOne: Bool = false
   @Environment(\.presentationMode) var presentationMode
-  @State var setToIndexZero: Bool = false
-
-  @ViewBuilder fileprivate func lrLocationSelectButton(index: Int) -> some View {
+  
+  @ViewBuilder func lrLocationSelectButton(index: Int) -> some View {
     if locationStore.storedLocate[index] != nil {
       ZStack {
         HStack {
@@ -24,23 +24,24 @@ struct MyAreaSetupView: View {
             locationStore.setIndicator(locationStore.selectedLocation)
           } label: {
             HStack {
-              Text("\(locationStore.storedLocate[index] ?? "")")
+              VStack {
+                Text("\(index)")
+                Text("\(locationStore.storedLocate[index] ?? "")")
+              }
               Spacer()
-              RemoveLocateButton(showAreaSearch: $showAreaSearch, setIndexZero: $setToIndexZero, index: index)
+              RemoveLocateButton(showAreaSearch: $showAreaSearch, lastOne: $lastOne, index: index)
             }
           }
           .buttonStyle(PlaceButtonStyle(index: index))
         }
       }
     } else {
-      NavigationLink(
-        destination: AreaSearchView(setToIndexZero: $setToIndexZero, index: index),
-        label: {
-          EmptyLocateView()
-        })
-        .fullScreenCover(isPresented: $showAreaSearch) {
-          AreaSearchView(setToIndexZero: $setToIndexZero, index: index)
-        }
+      NavigationLink(isActive: $showAreaSearch) {
+        AreaSearchView(setToIndexZero: $lastOne, index: index)
+      } label: {
+        EmptyLocateView()
+      }
+
     }
   }
 
@@ -119,9 +120,6 @@ struct MyAreaSetupView: View {
           showAreaSearch.toggle()
         }
       })
-      .fullScreenCover(isPresented: $showAreaSearch) {
-        AreaSearchView(setToIndexZero: $setToIndexZero, index: 0)
-      }
       .navigationBarHidden(true)
     }
   }
@@ -180,7 +178,7 @@ private struct RemoveLocateButton: View {
   @EnvironmentObject var locationStore: LocationStore
   @State private var showAlert = false
   @Binding var showAreaSearch: Bool
-  @Binding var setIndexZero: Bool
+  @Binding var lastOne: Bool
   var index: Int
 
   var locateIsOne: Bool {
@@ -211,7 +209,10 @@ private struct RemoveLocateButton: View {
   var okAction: () -> Void {
     if locateIsOne {
       func action() {
-        setIndexZero = true
+        #if DEBUG
+        print("is locationISOne")
+        #endif
+        lastOne.toggle()
         showAreaSearch.toggle()
       }
       return action
@@ -235,7 +236,9 @@ private struct RemoveLocateButton: View {
 
   var body: some View {
     Button {
+      print(index)
       showAlert.toggle()
+
     } label: {
       Image(systemName: "xmark.circle")
     }

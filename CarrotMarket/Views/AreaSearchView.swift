@@ -45,7 +45,12 @@ struct AreaSearchView: View {
       .padding([.leading, .trailing], 10)
       CurrentLocationButton()
         .padding()
-      Text(NSLocalizedString("Near Location", comment: "neighborhood"))
+      HStack {
+        Text(NSLocalizedString("Near Location", comment: "neighborhood"))
+        #if DEBUG
+        Text("target index: \(index)")
+        #endif
+      }
       ScrollViewReader { scrollProxy in
         List {
           ForEach(legal.legal[0...maxRange]) { area in
@@ -61,8 +66,9 @@ struct AreaSearchView: View {
                 locationStore.setIndicator(area.dong)
                 if setToIndexZero {
                   locationStore.setStoredLocate(area.dong, 0)
+                  setToIndexZero = false
                 } else {
-                  locationStore.setStoredLocate(area.dong, index)
+                  locationStore.setStoredLocate(area.dong, 1)
                 }
                 locationStore.setSelectedLocation(locationStore.buttonIndicator)
               }
@@ -77,6 +83,7 @@ struct AreaSearchView: View {
           }
         }
         .onAppear {
+          print("page index: \(index)")
           DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
             scrollProxy.scrollTo(nextLocateID)
           }
