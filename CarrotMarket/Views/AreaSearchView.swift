@@ -14,10 +14,10 @@ struct AreaSearchView: View {
   @State var showDuplicatedLocate: Bool = false
   @State var showEmptyLocation: Bool = false
   @EnvironmentObject var legal: LegalDongLibrary
-  @State var maxRange: Int = 100
   @Binding var setToIndexZero: Bool
   @State var searchQuery: String = ""
   @State var currentLocation: CLLocation?
+  var locationAPI = LocationAPI()
   var index: Int
   var nextLocateID: UUID {
     guard let locate = legal.legal.first else {
@@ -50,7 +50,7 @@ struct AreaSearchView: View {
       }
       .padding([.leading, .trailing], 10)
       Button {
-        print("find address")
+
       } label: {
         CurrentLocationButton(currentLocation: $currentLocation)
           .padding()
@@ -59,12 +59,11 @@ struct AreaSearchView: View {
         Text(NSLocalizedString("Near Location", comment: "neighborhood"))
         #if DEBUG
 //        Text("target index: \(index)")
-        Text("coordinate: \(currentLocation?.coordinate.latitude ?? CLLocation().coordinate.latitude)")
+//        Text("coordinate: \(currentLocation?.coordinate.latitude ?? 0), \(currentLocation?.coordinate.longitude ?? 0) ")
         #endif
       }
-      ScrollViewReader { scrollProxy in
         List {
-          ForEach(legal.legal[0...maxRange]) { area in
+          ForEach(legal.legal) { area in
             HStack {
               Text("\(area.city) \(area.gu) \(area.dong)")
               Spacer()
@@ -93,13 +92,7 @@ struct AreaSearchView: View {
             }
           }
         }
-        .onAppear {
-          DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-            scrollProxy.scrollTo(nextLocateID)
-          }
-        }
         .id(UUID())
-      }
     }
     .navigationBarHidden(true)
   }

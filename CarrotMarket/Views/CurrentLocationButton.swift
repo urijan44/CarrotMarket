@@ -14,11 +14,15 @@ struct CurrentLocationButton: View {
 
   @StateObject var locationManager = LocationManager()
   @Binding var currentLocation: CLLocation?
+  let location = LocationAPI()
 
   var body: some View {
     Button {
       locationManager.startLocationServices()
       currentLocation = locationManager.currentLocation
+      if let currentLocation = currentLocation {
+        location.fetchAddress(location: currentLocation)
+      }
     } label: {
       //현재위치로 찾기
       Text(NSLocalizedString("Search by current location", comment: "searchCurrentLocation"))
