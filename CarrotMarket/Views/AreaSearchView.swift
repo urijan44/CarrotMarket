@@ -8,6 +8,7 @@
 import SwiftUI
 import CoreLocation
 
+
 struct AreaSearchView: View {
   @Environment(\.presentationMode) var presentationMode
   @EnvironmentObject var locationStore: LocationStore
@@ -19,12 +20,6 @@ struct AreaSearchView: View {
   @State var currentLocation: CLLocation?
   var locationAPI = LocationAPI()
   var index: Int
-  var nextLocateID: UUID {
-    guard let locate = legal.legal.first else {
-      return legal.legal.last!.id
-    }
-    return locate.id
-  }
 
   var body: some View {
     VStack {
@@ -57,13 +52,16 @@ struct AreaSearchView: View {
       }
       HStack {
         Text(NSLocalizedString("Near Location", comment: "neighborhood"))
+          .font(.body)
+          .padding(.leading)
+        Spacer()
         #if DEBUG
 //        Text("target index: \(index)")
 //        Text("coordinate: \(currentLocation?.coordinate.latitude ?? 0), \(currentLocation?.coordinate.longitude ?? 0) ")
         #endif
       }
         List {
-          ForEach(legal.legal) { area in
+          ForEach(legal.sortedAreaStore, id: \.self) { area in
             HStack {
               Text("\(area.city) \(area.gu) \(area.dong)")
               Spacer()

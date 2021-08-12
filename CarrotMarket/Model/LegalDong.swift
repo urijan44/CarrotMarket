@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 //행정코드, 시, 구, 동(읍면)
 
@@ -15,9 +16,8 @@ class Legal {
   var city: String = ""
   var gu: String = ""
   var dong: String = ""
-  var xPoint: Double?
-  var yPoint: Double?
-
+  var location = CLLocation()
+  var distance: Double = Double(Int.max)
   init(raw: [String]) {
     hcode = raw[0]
     city = raw[1]

@@ -11,17 +11,24 @@ import CoreLocation
 private var buttonHeight: CGFloat = 35
 
 struct CurrentLocationButton: View {
-
+  
+  @EnvironmentObject var legal: LegalDongLibrary
   @StateObject var locationManager = LocationManager()
   @Binding var currentLocation: CLLocation?
-  let location = LocationAPI()
 
   var body: some View {
     Button {
       locationManager.startLocationServices()
       currentLocation = locationManager.currentLocation
-      if let currentLocation = currentLocation {
-        location.fetchAddress(location: currentLocation)
+      print(currentLocation ?? 0.0)
+      legal.sortedAreaStore.forEach {value in
+        value.distance = value.location.distance(from: currentLocation ?? CLLocation())
+      }
+      legal.sortedAreaStore.sort { lhs, rhs in
+        lhs.distance < rhs.distance
+      }
+      legal.sortedAreaStore.forEach { value in
+        print(value.dong, value.location.coordinate ,value.distance)
       }
     } label: {
       //현재위치로 찾기
@@ -71,5 +78,6 @@ struct CurrentLocationButton_Previews: PreviewProvider {
   static var previews: some View {
     CurrentLocationButton(currentLocation: .constant(nil))
       .previewLayout(.sizeThatFits)
+      .environmentObject(LegalDongLibrary())
   }
 }

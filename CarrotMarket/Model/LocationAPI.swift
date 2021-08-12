@@ -32,14 +32,29 @@ struct LocationAPI {
     }
     request.setValue(apiKeyId, forHTTPHeaderField: "X-NCP-APIGW-API-KEY-ID")
     request.setValue(apiKey, forHTTPHeaderField: "X-NCP-APIGW-API-KEY")
+    
     URLSession.shared.dataTask(with: request) { data, response, error in
       if let data = data, let response = response {
+        #if DEBUG
         print(String(data: data, encoding: .utf8) ?? "error", response)
+        #endif
+        
       }
       if let error = error {
+        #if DEBUG
         print(error.localizedDescription)
+        #endif
       }
     }
     .resume()
   }
+}
+
+struct AreaCoords {
+  var location: CLLocation
+
+  enum CodingKeys: CodingKey {
+//    case 
+  }
+
 }

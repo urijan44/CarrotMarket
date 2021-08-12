@@ -6,9 +6,12 @@
 //
 
 import Foundation
+import OrderedCollections
+import CoreLocation
 
 class LegalDongLibrary: ObservableObject {
-  var legal: [Legal] {
+  @Published var sortedAreaStore: [Legal] = []
+  var areaStore: [Legal] {
     let csvName = "AreaCode"
     var csvToStruct: [Legal] = []
 
@@ -16,7 +19,7 @@ class LegalDongLibrary: ObservableObject {
     guard let filePath = Bundle.main.path(forResource: csvName, ofType: "csv") else {
       return []
     }
-
+    print(filePath)
     //convert the contents of the file into one very long string
     var data = ""
     do {
@@ -37,11 +40,18 @@ class LegalDongLibrary: ObservableObject {
       var csvColumns = row.components(separatedBy: ",")
       csvColumns[0].removeFirst()
       if csvColumns.count == columnCount {
-        let legalStruct = Legal.init(raw: csvColumns)
+        let legalStruct = Legal.init(raw: Array(csvColumns[0...3]))
+        if let longitude = Double(csvColumns[4]), let latitude = Double(csvColumns[5]) {
+          legalStruct.location = CLLocation(latitude: latitude, longitude: longitude)
+        } else {
+          legalStruct.location = CLLocation()
+        }
         csvToStruct.append(legalStruct)
       }
     }
-
     return csvToStruct
+  }
+  init() {
+    sortedAreaStore = areaStore
   }
 }

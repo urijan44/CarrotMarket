@@ -35,12 +35,12 @@ struct MyAreaSetupView: View {
         }
       }
     } else {
-      NavigationLink(isActive: $showAreaSearch) {
-        AreaSearchView(setToIndexZero: $lastOne, index: index)
-      } label: {
-        EmptyLocateView()
-      }
-
+        NavigationLink(
+          destination: AreaSearchView(setToIndexZero: $lastOne, index: index),
+          isActive: $showAreaSearch,
+          label: {
+            EmptyLocateView()
+          })
     }
   }
 
@@ -116,6 +116,7 @@ struct MyAreaSetupView: View {
       }
       .onAppear(perform: {
         if locationStore.selectedLocation.isEmpty {
+          lastOne = true
           showAreaSearch.toggle()
         }
       })
@@ -235,11 +236,13 @@ private struct RemoveLocateButton: View {
 
   var body: some View {
     Button {
-      print(index)
       showAlert.toggle()
 
     } label: {
       Image(systemName: "xmark.circle")
+        .resizable()
+        .scaledToFit()
+        .frame(width: 20, height: 20)
     }
     .alert(isPresented: $showAlert) {
       Alert(
