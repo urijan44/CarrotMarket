@@ -14,7 +14,7 @@ enum FileError: Error {
   case urlFailure
 }
 
-class LocationStore: ObservableObject {
+class LocationIndicatorManager: ObservableObject {
   @AppStorage("selectedLocation") var selectedLocation: String = ""
   @Published var storedLocate: [String?] = [nil, nil]
   @AppStorage("leftStored") var left: String = ""

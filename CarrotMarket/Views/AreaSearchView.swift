@@ -11,10 +11,10 @@ import CoreLocation
 
 struct AreaSearchView: View {
   @Environment(\.presentationMode) var presentationMode
-  @EnvironmentObject var locationStore: LocationStore
+  @EnvironmentObject var locationStore: LocationIndicatorManager
+  @EnvironmentObject var legal: AddressStore
   @State var showDuplicatedLocate: Bool = false
   @State var showEmptyLocation: Bool = false
-  @EnvironmentObject var legal: LegalDongLibrary
   @Binding var setToIndexZero: Bool
   @State var searchQuery: String = ""
   @State var currentLocation: CLLocation?
@@ -61,13 +61,20 @@ struct AreaSearchView: View {
         #endif
       }
         List {
-          ForEach(legal.sortedAreaStore, id: \.self) { area in
+          ForEach(legal.sortedAddresses, id: \.self) { area in
             HStack {
               Text("\(area.city) \(area.gu) \(area.dong)")
               Spacer()
             }
             .contentShape(Rectangle())
             .onTapGesture(perform: {
+              let location = area.location
+              legal.sortedAddresses.forEach {value in
+                value.distance = location.distance(from: location)
+              }
+              legal.sortedAddresses.sort { lhs, rhs in
+                lhs.distance < rhs.distance
+              }
               if locationStore.storedLocate.contains(area.dong) {
                 showDuplicatedLocate = true
               } else {
@@ -80,6 +87,15 @@ struct AreaSearchView: View {
                 }
                 locationStore.setSelectedLocation(locationStore.buttonIndicator)
               }
+              let currentLocation = location
+              legal.sortedAddresses.forEach {value in
+                value.distance = location.distance(from: currentLocation)
+              }
+              legal.sortedAddresses.sort { lhs, rhs in
+                lhs.distance < rhs.distance
+              }
+              try? legal.save()
+              
               presentationMode.wrappedValue.dismiss()
             })
             .alert(isPresented: $showDuplicatedLocate) {
@@ -110,7 +126,7 @@ extension View {
 struct AreaSearchView_Previews: PreviewProvider {
   static var previews: some View {
     AreaSearchView(setToIndexZero: .constant(true), index: 0)
-      .environmentObject(LocationStore())
-      .environmentObject(LegalDongLibrary())
+      .environmentObject(LocationIndicatorManager())
+      .environmentObject(AddressStore())
   }
 }

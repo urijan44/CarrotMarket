@@ -12,8 +12,8 @@ struct CarrotMarketApp: App {
   var body: some Scene {
     WindowGroup {
       ContentView()
-        .environmentObject(LocationStore())
-        .environmentObject(LegalDongLibrary())
+        .environmentObject(LocationIndicatorManager())
+        .environmentObject(AddressStore())
     }
   }
 }

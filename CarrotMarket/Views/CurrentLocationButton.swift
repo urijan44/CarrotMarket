@@ -12,24 +12,32 @@ private var buttonHeight: CGFloat = 35
 
 struct CurrentLocationButton: View {
   
-  @EnvironmentObject var legal: LegalDongLibrary
+  @EnvironmentObject var legal: AddressStore
   @StateObject var locationManager = LocationManager()
   @Binding var currentLocation: CLLocation?
-
+  
   var body: some View {
     Button {
       locationManager.startLocationServices()
       currentLocation = locationManager.currentLocation
-      print(currentLocation ?? 0.0)
-      legal.sortedAreaStore.forEach {value in
-        value.distance = value.location.distance(from: currentLocation ?? CLLocation())
+      guard let wrappedCurrentLocation = currentLocation else {
+        return
       }
-      legal.sortedAreaStore.sort { lhs, rhs in
+      legal.sortedAddresses.forEach {value in
+        let location = value.location
+        value.distance = location.distance(from: wrappedCurrentLocation)
+        
+      }
+      legal.sortedAddresses.sort { lhs, rhs in
         lhs.distance < rhs.distance
       }
-      legal.sortedAreaStore.forEach { value in
-        print(value.dong, value.location.coordinate ,value.distance)
+      
+      do {
+        try legal.save()
+      } catch {
+        print(error.localizedDescription)
       }
+      
     } label: {
       //현재위치로 찾기
       Text(NSLocalizedString("Search by current location", comment: "searchCurrentLocation"))
@@ -40,18 +48,18 @@ struct CurrentLocationButton: View {
 
 private struct CurrentLocationButtonStyle: ButtonStyle {
   func makeBody(configuration: Configuration) -> some View {
-      HStack {
-        Spacer()
-        Image(systemName: "location.circle")
-        configuration.label
-        Spacer()
-      }
-      .foregroundColor(.white)
-      .frame(height: buttonHeight)
-      .font(.system(size: 15, weight: .heavy, design: .rounded))
-      .padding([.leading, .trailing])
-      .buttonPress(configuration.isPressed)
-      .animation(.easeOut(duration: 0.1))
+    HStack {
+      Spacer()
+      Image(systemName: "location.circle")
+      configuration.label
+      Spacer()
+    }
+    .foregroundColor(.white)
+    .frame(height: buttonHeight)
+    .font(.system(size: 15, weight: .heavy, design: .rounded))
+    .padding([.leading, .trailing])
+    .buttonPress(configuration.isPressed)
+    .animation(.easeOut(duration: 0.1))
   }
 }
 
@@ -61,13 +69,13 @@ private extension View {
       !isPressed ? AnyView(normal()) : AnyView(pressed())
     )
   }
-
+  
   func normal() -> some View {
     RoundedRectangle(cornerRadius: 5)
       .foregroundColor(Color.orange)
-    }
-
-
+  }
+  
+  
   func pressed() -> some View {
     RoundedRectangle(cornerRadius: 5)
       .foregroundColor(Color("OrangeButtonPressedColor"))
@@ -78,6 +86,7 @@ struct CurrentLocationButton_Previews: PreviewProvider {
   static var previews: some View {
     CurrentLocationButton(currentLocation: .constant(nil))
       .previewLayout(.sizeThatFits)
-      .environmentObject(LegalDongLibrary())
+      .environmentObject(AddressStore())
   }
 }
+

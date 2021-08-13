@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension LocationStore {
+extension LocationIndicatorManager {
   func createDevData() {
     selectedLocation = "청운동"
     storedLocate[0] = "청운동"

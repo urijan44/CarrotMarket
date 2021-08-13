@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MyAreaSetupView: View {
-  @EnvironmentObject var locationStore: LocationStore
+  @EnvironmentObject var locationStore: LocationIndicatorManager
   @State var areaRange = 0.0
   @State var sliderChanged = false
   @State var showAreaSearch: Bool = false
@@ -78,10 +78,17 @@ struct MyAreaSetupView: View {
           HStack {
               Text("\(locationStore.selectedLocation)")
               .padding(.trailing, 1)
-              Text(NSLocalizedString("Near Location", comment: "neighborhood"))
-//            Text("근처 동네 6개")
-              .fontWeight(.bold)
-              .underline()
+            NavigationLink(
+              destination: NearLocationView(magnitude: areaRange),
+              label: {
+                Text(NSLocalizedString("Near Location", comment: "neighborhood"))
+                  //            Text("근처 동네 6개")
+                  .fontWeight(.bold)
+                  .underline()
+              })
+              .navigationTitle(Text(NSLocalizedString("Near Location", comment: "neighborhood")))
+              .navigationBarTitleDisplayMode(.inline)
+              .foregroundColor(.black)
           }
           .padding(.bottom, 5)
 //          Text("선택한 범위의 게시물만 볼 수 있어요.")
@@ -138,7 +145,7 @@ struct MyAreaSetupView: View {
 }
 
 private struct PlaceButtonStyle: ButtonStyle {
-  @EnvironmentObject var locationStore: LocationStore
+  @EnvironmentObject var locationStore: LocationIndicatorManager
   let index: Int
   func makeBody(configuration: Configuration) -> some View {
     let isSelected = locationStore.selectedLocation == locationStore.storedLocate[index]
@@ -175,7 +182,7 @@ private extension View {
 }
 
 private struct RemoveLocateButton: View {
-  @EnvironmentObject var locationStore: LocationStore
+  @EnvironmentObject var locationStore: LocationIndicatorManager
   @State private var showAlert = false
   @Binding var showAreaSearch: Bool
   @Binding var lastOne: Bool
@@ -209,9 +216,6 @@ private struct RemoveLocateButton: View {
   var okAction: () -> Void {
     if locateIsOne {
       func action() {
-        #if DEBUG
-        print("is locationISOne")
-        #endif
         lastOne.toggle()
         showAreaSearch.toggle()
       }
@@ -293,6 +297,6 @@ private struct SliderView: View {
 struct MyAreaSetupView_Previews: PreviewProvider {
   static var previews: some View {
     MyAreaSetupView()
-      .environmentObject(LocationStore())
+      .environmentObject(LocationIndicatorManager())
   }
 }
