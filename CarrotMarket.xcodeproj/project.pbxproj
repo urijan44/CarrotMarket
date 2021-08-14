@@ -3,16 +3,18 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		8A00798F26B9285000793ADC /* LocationAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A00798E26B9285000793ADC /* LocationAPI.swift */; };
+		8A2888EF26C7773A0000184C /* SearchFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2888EE26C7773A0000184C /* SearchFieldView.swift */; };
+		8A2888F126C8077D0000184C /* NearLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2888F026C8077D0000184C /* NearLocation.swift */; };
+		8A2888F326C80A2C0000184C /* NearLocationLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2888F226C80A2C0000184C /* NearLocationLabelView.swift */; };
 		8A6E198C26A5DD6500E169C1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8A6E198E26A5DD6500E169C1 /* Localizable.strings */; };
 		8A70470726A6DAF9007AED77 /* LocationIndicatorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A70470626A6DAF9007AED77 /* LocationIndicatorManager.swift */; };
 		8A84519026A8219B0025573B /* LocationStoreDevData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A84518F26A8219B0025573B /* LocationStoreDevData.swift */; };
 		8A966E6526C5FE7100BDEFD8 /* Addresses.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A966E6426C5FE7100BDEFD8 /* Addresses.plist */; };
-		8AAC37F726BAAFAA00497C56 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 8AAC37F626BAAFAA00497C56 /* OrderedCollections */; };
 		8ADD1BE726AD3518001F6178 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADD1BE626AD3518001F6178 /* LocationManager.swift */; };
 		8AF8718326C4BC310087A946 /* NearLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF8718226C4BC310087A946 /* NearLocationView.swift */; };
 		8AF8718526C5B15E0087A946 /* PlistManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF8718426C5B15E0087A946 /* PlistManager.swift */; };
@@ -30,6 +32,9 @@
 
 /* Begin PBXFileReference section */
 		8A00798E26B9285000793ADC /* LocationAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAPI.swift; sourceTree = "<group>"; };
+		8A2888EE26C7773A0000184C /* SearchFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFieldView.swift; sourceTree = "<group>"; };
+		8A2888F026C8077D0000184C /* NearLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearLocation.swift; sourceTree = "<group>"; };
+		8A2888F226C80A2C0000184C /* NearLocationLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearLocationLabelView.swift; sourceTree = "<group>"; };
 		8A686CEE26A5DE2E00A46148 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8A6E198D26A5DD6500E169C1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8A70470626A6DAF9007AED77 /* LocationIndicatorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationIndicatorManager.swift; sourceTree = "<group>"; };
@@ -58,13 +63,33 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8AAC37F726BAAFAA00497C56 /* OrderedCollections in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8A2888ED26C777250000184C /* AreaSearchPage */ = {
+			isa = PBXGroup;
+			children = (
+				8AFBF33926A4434800261CC7 /* AreaSearchView.swift */,
+				8A2888EE26C7773A0000184C /* SearchFieldView.swift */,
+				8AFBF33D26A4435E00261CC7 /* CurrentLocationButton.swift */,
+			);
+			path = AreaSearchPage;
+			sourceTree = "<group>";
+		};
+		8A2888F426C80A8F0000184C /* MyAreaSetupPage */ = {
+			isa = PBXGroup;
+			children = (
+				8AFBF33B26A4435200261CC7 /* HeaderView.swift */,
+				8AFBF33726A4433C00261CC7 /* MyAreaSetupView.swift */,
+				8A2888F226C80A2C0000184C /* NearLocationLabelView.swift */,
+				8AF8718226C4BC310087A946 /* NearLocationView.swift */,
+			);
+			path = MyAreaSetupPage;
+			sourceTree = "<group>";
+		};
 		8A2EF34226B9AA0C0069CF2B /* Configurations */ = {
 			isa = PBXGroup;
 			children = (
@@ -119,11 +144,8 @@
 			isa = PBXGroup;
 			children = (
 				8AFBF32126A4424E00261CC7 /* ContentView.swift */,
-				8AFBF33726A4433C00261CC7 /* MyAreaSetupView.swift */,
-				8AFBF33926A4434800261CC7 /* AreaSearchView.swift */,
-				8AFBF33B26A4435200261CC7 /* HeaderView.swift */,
-				8AFBF33D26A4435E00261CC7 /* CurrentLocationButton.swift */,
-				8AF8718226C4BC310087A946 /* NearLocationView.swift */,
+				8A2888F426C80A8F0000184C /* MyAreaSetupPage */,
+				8A2888ED26C777250000184C /* AreaSearchPage */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -137,6 +159,7 @@
 				8ADD1BE626AD3518001F6178 /* LocationManager.swift */,
 				8A00798E26B9285000793ADC /* LocationAPI.swift */,
 				8AF8718426C5B15E0087A946 /* PlistManager.swift */,
+				8A2888F026C8077D0000184C /* NearLocation.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -165,7 +188,6 @@
 			);
 			name = CarrotMarket;
 			packageProductDependencies = (
-				8AAC37F626BAAFAA00497C56 /* OrderedCollections */,
 			);
 			productName = CarrotMarket;
 			productReference = 8AFBF31C26A4424E00261CC7 /* CarrotMarket.app */;
@@ -196,7 +218,6 @@
 			);
 			mainGroup = 8AFBF31326A4424E00261CC7;
 			packageReferences = (
-				8AAC37F526BAAFAA00497C56 /* XCRemoteSwiftPackageReference "swift-collections" */,
 			);
 			productRefGroup = 8AFBF31D26A4424E00261CC7 /* Products */;
 			projectDirPath = "";
@@ -229,6 +250,7 @@
 				8AFBF33826A4433C00261CC7 /* MyAreaSetupView.swift in Sources */,
 				8AFBF32226A4424E00261CC7 /* ContentView.swift in Sources */,
 				8AFBF32026A4424E00261CC7 /* CarrotMarketApp.swift in Sources */,
+				8A2888F326C80A2C0000184C /* NearLocationLabelView.swift in Sources */,
 				8ADD1BE726AD3518001F6178 /* LocationManager.swift in Sources */,
 				8AFBF33426A442EB00261CC7 /* LegalDong.swift in Sources */,
 				8AFBF33626A4431300261CC7 /* AddressStore.swift in Sources */,
@@ -238,8 +260,10 @@
 				8AFBF33E26A4435E00261CC7 /* CurrentLocationButton.swift in Sources */,
 				8AFBF33C26A4435200261CC7 /* HeaderView.swift in Sources */,
 				8A84519026A8219B0025573B /* LocationStoreDevData.swift in Sources */,
+				8A2888F126C8077D0000184C /* NearLocation.swift in Sources */,
 				8A70470726A6DAF9007AED77 /* LocationIndicatorManager.swift in Sources */,
 				8A00798F26B9285000793ADC /* LocationAPI.swift in Sources */,
+				8A2888EF26C7773A0000184C /* SearchFieldView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -311,7 +335,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -368,7 +392,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -388,7 +412,7 @@
 				DEVELOPMENT_TEAM = XJXA3BQDMJ;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = CarrotMarket/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -410,7 +434,7 @@
 				DEVELOPMENT_TEAM = XJXA3BQDMJ;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = CarrotMarket/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -444,25 +468,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		8AAC37F526BAAFAA00497C56 /* XCRemoteSwiftPackageReference "swift-collections" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/apple/swift-collections.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.0.4;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		8AAC37F626BAAFAA00497C56 /* OrderedCollections */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 8AAC37F526BAAFAA00497C56 /* XCRemoteSwiftPackageReference "swift-collections" */;
-			productName = OrderedCollections;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8AFBF31426A4424E00261CC7 /* Project object */;
 }

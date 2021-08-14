@@ -18,12 +18,13 @@ class LocationManager: NSObject, ObservableObject {
     locationManager.desiredAccuracy = kCLLocationAccuracyBest
   }
 
-  func startLocationServices() {
+  func startLocationServices() -> CLLocation? {
     if locationManager.authorizationStatus == .authorizedAlways || locationManager.authorizationStatus == .authorizedWhenInUse {
       locationManager.startUpdatingLocation()
     } else {
       locationManager.requestWhenInUseAuthorization()
     }
+    return currentLocation
   }
 }
 

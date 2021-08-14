@@ -18,24 +18,14 @@ struct CurrentLocationButton: View {
   
   var body: some View {
     Button {
-      locationManager.startLocationServices()
-      currentLocation = locationManager.currentLocation
-      guard let wrappedCurrentLocation = currentLocation else {
+      guard let currentLocation = locationManager.startLocationServices() else {
         return
       }
-      legal.sortedAddresses.forEach {value in
-        let location = value.location
-        value.distance = location.distance(from: wrappedCurrentLocation)
-        
-      }
-      legal.sortedAddresses.sort { lhs, rhs in
-        lhs.distance < rhs.distance
-      }
-      
+
       do {
-        try legal.save()
+        try legal.updateData(location: currentLocation)
       } catch {
-        print(error.localizedDescription)
+        print(error)
       }
       
     } label: {
@@ -86,7 +76,7 @@ struct CurrentLocationButton_Previews: PreviewProvider {
   static var previews: some View {
     CurrentLocationButton(currentLocation: .constant(nil))
       .previewLayout(.sizeThatFits)
-      .environmentObject(AddressStore())
+      .environmentObject(try! AddressStore())
   }
 }
 

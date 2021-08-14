@@ -21,7 +21,7 @@ class AddressModel: Codable {
   var distance: Double = 0.0
   
   enum CodingKeys: CodingKey {
-    case id, hcode, city, gu, dong, longitude, latitude, distance
+    case hcode, city, gu, dong, longitude, latitude, distance
   }
   
   func encode(to encoder: Encoder) throws {
@@ -29,6 +29,7 @@ class AddressModel: Codable {
     try container.encode(hcode, forKey: .hcode)
     try container.encode(city, forKey: .city)
     try container.encode(gu, forKey: .gu)
+    try container.encode(dong, forKey: .dong)
     try container.encode(longitude, forKey: .longitude)
     try container.encode(latitude, forKey: .latitude)
     try container.encode(distance, forKey: .distance)

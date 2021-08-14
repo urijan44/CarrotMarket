@@ -8,24 +8,26 @@
 import SwiftUI
 
 struct MyAreaSetupView: View {
-  @EnvironmentObject var locationStore: LocationIndicatorManager
+  @EnvironmentObject var locationIndicatorManager: LocationIndicatorManager
+  @EnvironmentObject var addressStore: AddressStore
   @State var areaRange = 0.0
   @State var sliderChanged = false
   @State var showAreaSearch: Bool = false
   @State var lastOne: Bool = false
+  @State var showWillApearAreaSearch: Bool = false
   @Environment(\.presentationMode) var presentationMode
   
   @ViewBuilder func lrLocationSelectButton(index: Int) -> some View {
-    if locationStore.storedLocate[index] != nil {
+    if locationIndicatorManager.storedLocate[index] != nil {
       ZStack {
         HStack {
           Button {
-            locationStore.setSelectedLocation(locationStore.storedLocate[index])
-            locationStore.setIndicator(locationStore.selectedLocation)
+            locationIndicatorManager.setSelectedLocation(locationIndicatorManager.storedLocate[index])
+            locationIndicatorManager.setIndicator(locationIndicatorManager.selectedLocation)
           } label: {
             HStack {
               VStack {
-                Text("\(locationStore.storedLocate[index] ?? "")")
+                Text("\(locationIndicatorManager.storedLocate[index] ?? "")")
               }
               Spacer()
               RemoveLocateButton(showAreaSearch: $showAreaSearch, lastOne: $lastOne, index: index)
@@ -34,13 +36,6 @@ struct MyAreaSetupView: View {
           .buttonStyle(PlaceButtonStyle(index: index))
         }
       }
-    } else {
-        NavigationLink(
-          destination: AreaSearchView(setToIndexZero: $lastOne, index: index),
-          isActive: $showAreaSearch,
-          label: {
-            EmptyLocateView()
-          })
     }
   }
 
@@ -52,7 +47,6 @@ struct MyAreaSetupView: View {
           xButton
             .padding(.leading, 10)
           HeaderView(title: NSLocalizedString("Set My Location", comment: "setMyLocation"))
-
         }
         .padding(5)
         Divider()
@@ -66,26 +60,35 @@ struct MyAreaSetupView: View {
 //          Text("지역은 최소 1개 이상 최대 2개까지 설정 가능해요.")
             .font(.caption)
             .foregroundColor(.secondary)
-            .padding(.bottom, 3)
+            .padding(.bottom, 18)
           HStack {
-            lrLocationSelectButton(index: 0)
-            lrLocationSelectButton(index: 1)
+            if locationIndicatorManager.storedLocate[0] == nil {
+              NavigationLink(destination: AreaSearchView(index: 0), isActive: $showWillApearAreaSearch) {
+                EmptyLocateView()
+              }
+            } else {
+              lrLocationSelectButton(index: 0)
+            }
+            
+            if locationIndicatorManager.storedLocate[1] == nil {
+              NavigationLink(destination: AreaSearchView(index: 1)) {
+                EmptyLocateView()
+              }
+            } else {
+              lrLocationSelectButton(index: 1)
+            }
           }
           Divider()
             .padding(5)
 
           //MARK: - 동네 범위 Section
           HStack {
-              Text("\(locationStore.selectedLocation)")
+              Text("\(locationIndicatorManager.selectedLocation)")
               .padding(.trailing, 1)
             NavigationLink(
-              destination: NearLocationView(magnitude: areaRange),
-              label: {
-                Text(NSLocalizedString("Near Location", comment: "neighborhood"))
-                  //            Text("근처 동네 6개")
-                  .fontWeight(.bold)
-                  .underline()
-              })
+              destination: EmptyView()) {
+                NearLocationLabelView(magnitude: $areaRange)
+              }
               .navigationTitle(Text(NSLocalizedString("Near Location", comment: "neighborhood")))
               .navigationBarTitleDisplayMode(.inline)
               .foregroundColor(.black)
@@ -121,12 +124,11 @@ struct MyAreaSetupView: View {
         }
         .padding()
       }
-      .onAppear(perform: {
-        if locationStore.selectedLocation.isEmpty {
-          lastOne = true
-          showAreaSearch.toggle()
+      .onAppear{
+        if locationIndicatorManager.selectedLocation.isEmpty {
+          showWillApearAreaSearch = true
         }
-      })
+      }
       .navigationBarHidden(true)
     }
   }
@@ -216,8 +218,7 @@ private struct RemoveLocateButton: View {
   var okAction: () -> Void {
     if locateIsOne {
       func action() {
-        lastOne.toggle()
-        showAreaSearch.toggle()
+        showAreaSearch = true
       }
       return action
     } else {
@@ -239,9 +240,14 @@ private struct RemoveLocateButton: View {
   }
 
   var body: some View {
+    NavigationLink(destination: AreaSearchView(index: 0), isActive: $showAreaSearch) {
+      EmptyView()
+    }
+    NavigationLink(destination: EmptyView()) {
+        EmptyView()
+    }
     Button {
       showAlert.toggle()
-
     } label: {
       Image(systemName: "xmark.circle")
         .resizable()

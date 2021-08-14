@@ -20,35 +20,59 @@ class AddressStore: ObservableObject {
   @AppStorage("distances") var distances: String = ""
   
   func save() throws {
-    sortedAddresses.forEach {
-      let str = String($0.distance)
-      distances.append(str)
-      distances.append(",")
-    }
-    
-    guard let _ = try? PlistManager().convertToPlist(sortedAddresses) else {
-      throw AddressStoreError.saveFail
+    do {
+      try PlistManager().convertToPlist(sortedAddresses)
+    } catch {
+      throw FileError.saveFailure
     }
   }
   
-  init() {
-    #if DEBUG
-    print("addressStore init")
-    #endif
-    guard let store = try? PlistManager().convertToDataStructure() else {
-      print("load fail")
-      return
-    }
-    sortedAddresses = store
-    var rows = distances.components(separatedBy: ",")
-    for address in sortedAddresses {
-      guard let _ = rows.first else {
-        return
+  func load() throws {
+    do {
+      sortedAddresses = try PlistManager().convertToDataStructure(defaultLoad: false)
+      if sortedAddresses.count == 0 {
+        try defaultLoad()
       }
-      address.distance = (rows.removeFirst() as NSString).doubleValue
+    } catch {
+      throw FileError.loadFailure
+    }
+  }
+  
+  func defaultLoad() throws {
+    do {
+      sortedAddresses = try PlistManager().convertToDataStructure(defaultLoad: true)
+    } catch {
+      throw FileError.loadFailure
+    }
+  }
+  
+  func updateData(location: CLLocation) throws {
+    sortedAddresses.forEach {value in
+      value.distance = value.location.distance(from: location)
     }
     sortedAddresses.sort { lhs, rhs in
       lhs.distance < rhs.distance
+    }
+
+    do {
+      try save()
+    } catch {
+      print(error.localizedDescription)
+    }
+  }
+  
+  init() throws {
+    do {
+      try defaultLoad()
+    } catch {
+      throw error
+    }
+  }
+  init(withChecking: Bool) throws {
+    do {
+      try load()
+    } catch {
+      throw error
     }
   }
 }
