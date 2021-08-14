@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct NearLocationLabelView: View {
-  @EnvironmentObject var addressStore: AddressStore
+  @EnvironmentObject var listStore: ListStore
   @Binding var magnitude: Double
   var count: Int {
     nearLocation.count
@@ -30,13 +30,14 @@ struct NearLocationLabelView: View {
   
   var nearLocation: [String] {
     var returning: [String] = []
-    addressStore.sortedAddresses.forEach {
+    listStore.storedLists[index].forEach {
       if $0.distance <= self.limit {
         returning.append($0.dong)
       }
     }
     return returning
   }
+  var index: Int
   var body: some View {
     HStack {
       NavigationLink(destination: NearLocationView(nearLocation: nearLocation)) {
@@ -51,8 +52,7 @@ struct NearLocationLabelView: View {
 
 struct NearLocationLabelView_Previews: PreviewProvider {
   static var previews: some View {
-    NearLocationLabelView(magnitude: .constant(2))
+    NearLocationLabelView(magnitude: .constant(2), index: 0)
       .previewLayout(.sizeThatFits)
-      .environmentObject(try! AddressStore())
   }
 }

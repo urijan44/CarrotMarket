@@ -17,7 +17,6 @@ private enum AddressStoreError: Error {
 
 class AddressStore: ObservableObject {
   @Published var sortedAddresses: [AddressModel] = []
-  @AppStorage("distances") var distances: String = ""
   
   func save() throws {
     do {

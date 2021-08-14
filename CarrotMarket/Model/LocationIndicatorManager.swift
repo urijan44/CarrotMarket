@@ -19,8 +19,8 @@ class LocationIndicatorManager: ObservableObject {
   @Published var storedLocate: [String?] = [nil, nil]
   @AppStorage("leftStored") var left: String = ""
   @AppStorage("rightStored") var right: String = ""
-  @AppStorage("buttonIndicator")var buttonIndicator: String = ""
-
+  @AppStorage("buttonIndicator") var buttonIndicator: String = ""
+  
   init() {
     if !left.isEmpty {
       storedLocate[0] = left
@@ -29,14 +29,16 @@ class LocationIndicatorManager: ObservableObject {
       storedLocate[1] = right
     }
   }
-
+  
+  
+  
   func setSelectedLocation(_ locate: String?) {
     guard let locate = locate else {
       return
     }
     selectedLocation = locate
   }
-
+  
   func setStoredLocate(_ locate: String?, _ index: Int) {
     guard index == 1 || index == 0 else {
       return
@@ -48,7 +50,7 @@ class LocationIndicatorManager: ObservableObject {
       right = locate ?? ""
     }
   }
-
+  
   func setIndicator(_ locate: String?) {
     guard let locate = locate else {
       return

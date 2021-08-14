@@ -13,6 +13,7 @@ struct AreaSearchView: View {
   @Environment(\.presentationMode) var presentationMode
   @EnvironmentObject var locationIndicatorManager: LocationIndicatorManager
   @EnvironmentObject var addressStore: AddressStore
+  @EnvironmentObject var listStore: ListStore
   @State var showDuplicatedLocate: Bool = false
   @State var showEmptyLocation: Bool = false
   @State var currentLocation: CLLocation?
@@ -49,6 +50,7 @@ struct LocationListView: View {
   @Environment(\.presentationMode) var presentationMode
   @EnvironmentObject var addressStore: AddressStore
   @EnvironmentObject var LocationIndicatorManager: LocationIndicatorManager
+  @EnvironmentObject var listStore: ListStore
   @State var showDuplicatedLocate: Bool = false
   var index: Int
   
@@ -75,11 +77,28 @@ struct LocationListView: View {
             LocationIndicatorManager.setIndicator(area.dong)
             if index == 0 {
               LocationIndicatorManager.setStoredLocate(area.dong, 0)
+              if listStore.storedLists.count > 0 {
+                listStore.storedLists[0] = addressStore.sortedAddresses
+              } else {
+                listStore.storedLists.append(addressStore.sortedAddresses)
+              }
             } else {
               LocationIndicatorManager.setStoredLocate(area.dong, 1)
+              if listStore.storedLists.count > 1 {
+                listStore.storedLists[1] = addressStore.sortedAddresses
+              } else if listStore.storedLists.count == 1{
+                listStore.storedLists.append(addressStore.sortedAddresses)
+              }
             }
             LocationIndicatorManager.setSelectedLocation(LocationIndicatorManager.buttonIndicator)
           }
+          print(listStore.storedLists)
+          do {
+            try listStore.save()
+          } catch {
+            print(error)
+          }
+          
           presentationMode.wrappedValue.dismiss()
         }
 //        .alert(isPresented: $showDuplicatedLocate) {

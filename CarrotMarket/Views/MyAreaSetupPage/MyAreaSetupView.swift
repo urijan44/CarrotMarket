@@ -10,12 +10,14 @@ import SwiftUI
 struct MyAreaSetupView: View {
   @EnvironmentObject var locationIndicatorManager: LocationIndicatorManager
   @EnvironmentObject var addressStore: AddressStore
+  @EnvironmentObject var listStore: ListStore
+  @Environment(\.presentationMode) var presentationMode
   @State var areaRange = 0.0
   @State var sliderChanged = false
   @State var showAreaSearch: Bool = false
   @State var lastOne: Bool = false
   @State var showWillApearAreaSearch: Bool = false
-  @Environment(\.presentationMode) var presentationMode
+  
   
   @ViewBuilder func lrLocationSelectButton(index: Int) -> some View {
     if locationIndicatorManager.storedLocate[index] != nil {
@@ -54,10 +56,8 @@ struct MyAreaSetupView: View {
         //MARK: - 동네 선택 Section
         VStack {
           Text(NSLocalizedString("Select Location", comment: "selectLocation"))
-//          Text("동네 선택하기")
             .padding(.bottom, 5)
             Text(NSLocalizedString("A minimum of 1 and a maximum of 2 regions are allowed.", comment: "min1max2"))
-//          Text("지역은 최소 1개 이상 최대 2개까지 설정 가능해요.")
             .font(.caption)
             .foregroundColor(.secondary)
             .padding(.bottom, 18)
@@ -78,21 +78,31 @@ struct MyAreaSetupView: View {
               lrLocationSelectButton(index: 1)
             }
           }
+          Text(locationIndicatorManager.selectedLocation)
           Divider()
             .padding(5)
 
-          //MARK: - 동네 범위 Section
+          //MARK: - 동네 범위 Section, Slider
           HStack {
               Text("\(locationIndicatorManager.selectedLocation)")
               .padding(.trailing, 1)
-            NearLocationLabelView(magnitude: $areaRange)
+            if locationIndicatorManager.selectedLocation == locationIndicatorManager.storedLocate[0] {
+              if listStore.storedLists.count > 0 {
+                NearLocationLabelView(magnitude: $areaRange, index: 0)
+              }
+            } else if locationIndicatorManager.selectedLocation == locationIndicatorManager.storedLocate[1] {
+              if listStore.storedLists.count > 1 {
+                NearLocationLabelView(magnitude: $areaRange, index: 1)
+              } else {
+                EmptyView()
+              }
+            }
           }
           .padding(.bottom, 5)
           Text(NSLocalizedString("You can see only the selected range of posts.", comment: "readRange"))
             .font(.caption)
             .foregroundColor(.secondary)
           VStack {
-            //MARK: - Slider
             SliderView(sliderValue: $areaRange, sliderChanged: $sliderChanged)
               .animation(.easeOut)
             HStack {
@@ -173,14 +183,15 @@ private extension View {
 }
 
 private struct RemoveLocateButton: View {
-  @EnvironmentObject var locationStore: LocationIndicatorManager
+  @EnvironmentObject var locationIndicatorManager: LocationIndicatorManager
+  @EnvironmentObject var listStore: ListStore
   @State private var showAlert = false
   @Binding var showAreaSearch: Bool
   @Binding var lastOne: Bool
   var index: Int
 
   var locateIsOne: Bool {
-    let nonNil = locationStore.storedLocate.filter { $0 != nil }.count
+    let nonNil = locationIndicatorManager.storedLocate.filter { $0 != nil }.count
     return nonNil == 1
   }
 
@@ -213,16 +224,17 @@ private struct RemoveLocateButton: View {
     } else {
       func action() {
         if index == 1 {
-          if locationStore.buttonIndicator == locationStore.selectedLocation {
-            locationStore.setSelectedLocation(locationStore.storedLocate[0])
-            locationStore.buttonIndicator = locationStore.selectedLocation
+          if locationIndicatorManager.buttonIndicator == locationIndicatorManager.selectedLocation {
+            locationIndicatorManager.setSelectedLocation(locationIndicatorManager.storedLocate[0])
+            locationIndicatorManager.buttonIndicator = locationIndicatorManager.selectedLocation
           }
         } else {
-          locationStore.setIndicator(locationStore.storedLocate[1])
-          locationStore.setSelectedLocation(locationStore.buttonIndicator)
-          locationStore.setStoredLocate(locationStore.buttonIndicator, 0)
+          locationIndicatorManager.setIndicator(locationIndicatorManager.storedLocate[1])
+          locationIndicatorManager.setSelectedLocation(locationIndicatorManager.buttonIndicator)
+          locationIndicatorManager.setStoredLocate(locationIndicatorManager.buttonIndicator, 0)
+          listStore.storedLists[0] = listStore.storedLists[1]
         }
-        locationStore.setStoredLocate(nil, 1)
+        locationIndicatorManager.setStoredLocate(nil, 1)
       }
       return action
     }
