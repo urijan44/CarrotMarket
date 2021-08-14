@@ -39,9 +39,11 @@ struct NearLocationLabelView: View {
   }
   var body: some View {
     HStack {
-      Text(NSLocalizedString("Near Location \(nearLocation.count)", comment: "neighborhood"))
-        .fontWeight(.bold)
-        .underline()
+      NavigationLink(destination: NearLocationView(nearLocation: nearLocation)) {
+        Text(NSLocalizedString("Near Location \(nearLocation.count)", comment: "neighborhood"))
+          .fontWeight(.bold)
+          .underline()
+      }
     }
   }
 }
