@@ -78,7 +78,6 @@ struct MyAreaSetupView: View {
               lrLocationSelectButton(index: 1)
             }
           }
-          Text(locationIndicatorManager.selectedLocation)
           Divider()
             .padding(5)
 

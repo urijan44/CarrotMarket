@@ -75,6 +75,7 @@ struct LocationListView: View {
             showDuplicatedLocate = true
           } else {
             LocationIndicatorManager.setIndicator(area.dong)
+            
             if index == 0 {
               LocationIndicatorManager.setStoredLocate(area.dong, 0)
               if listStore.storedLists.count > 0 {
@@ -82,17 +83,17 @@ struct LocationListView: View {
               } else {
                 listStore.storedLists.append(addressStore.sortedAddresses)
               }
+              // index == 1
             } else {
               LocationIndicatorManager.setStoredLocate(area.dong, 1)
               if listStore.storedLists.count > 1 {
                 listStore.storedLists[1] = addressStore.sortedAddresses
-              } else if listStore.storedLists.count == 1{
+              } else {
                 listStore.storedLists.append(addressStore.sortedAddresses)
               }
             }
             LocationIndicatorManager.setSelectedLocation(LocationIndicatorManager.buttonIndicator)
           }
-          print(listStore.storedLists)
           do {
             try listStore.save()
           } catch {
