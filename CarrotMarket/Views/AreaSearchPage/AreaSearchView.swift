@@ -14,22 +14,23 @@ struct AreaSearchView: View {
   @EnvironmentObject var locationIndicatorManager: LocationIndicatorManager
   @EnvironmentObject var addressStore: AddressStore
   @EnvironmentObject var listStore: ListStore
-  @State var showDuplicatedLocate: Bool = false
-  @State var showEmptyLocation: Bool = false
-  @State var currentLocation: CLLocation?
+  @State private var showDuplicatedLocate: Bool = false
+  @State private var showEmptyLocation: Bool = false
+  @State private var currentLocation: CLLocation?
+  @State private var searchQuery = ""
   var index: Int
 
   var body: some View {
     VStack {
       //MARK: - Search View
-      SearchFieldView()
+      SearchFieldView(searchQuery: $searchQuery)
       //MARK: current location get button
       CurrentLocationButton(currentLocation: $currentLocation)
         .padding([.leading, .trailing, .bottom])
       //MARK: Description
       NearLocationLabel()
       //MARK: LIST
-      LocationListView(index: index)
+      LocationListView(searchQuery: $searchQuery, index: index)
     }
     .navigationBarHidden(true)
   }
@@ -52,11 +53,22 @@ struct LocationListView: View {
   @EnvironmentObject var LocationIndicatorManager: LocationIndicatorManager
   @EnvironmentObject var listStore: ListStore
   @State var showDuplicatedLocate: Bool = false
+  @Binding var searchQuery: String
   var index: Int
+  
+  var matchingAddresses: [AddressModel] {
+    var matchingAddresses = addressStore.sortedAddresses
+    if !searchQuery.isEmpty {
+      matchingAddresses = matchingAddresses.filter {
+        $0.city.contains(searchQuery) || $0.dong.contains(searchQuery) || $0.gu.contains(searchQuery)
+      }
+    }
+    return matchingAddresses
+  }
   
   var body: some View {
     List {
-      ForEach(addressStore.sortedAddresses, id: \.self) { area in
+      ForEach(matchingAddresses, id: \.self) { area in
         HStack {
           Text("\(area.city) \(area.gu) \(area.dong)")
           Spacer()

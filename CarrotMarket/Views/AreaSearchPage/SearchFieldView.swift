@@ -11,7 +11,7 @@ struct SearchFieldView: View {
   @EnvironmentObject var locationIndicatorManager: LocationIndicatorManager
   @Environment(\.presentationMode) var presentationMode
   @State var showEmptyLocation: Bool = false
-  @State var searchQuery: String = ""
+  @Binding var searchQuery: String
   
   var body: some View {
     
@@ -42,6 +42,6 @@ struct SearchFieldView: View {
 
 struct SearchFieldView_Previews: PreviewProvider {
   static var previews: some View {
-    SearchFieldView()
+    SearchFieldView(searchQuery: .constant(""))
   }
 }
