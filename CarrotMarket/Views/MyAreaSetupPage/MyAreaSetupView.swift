@@ -85,31 +85,20 @@ struct MyAreaSetupView: View {
           HStack {
               Text("\(locationIndicatorManager.selectedLocation)")
               .padding(.trailing, 1)
-            NavigationLink(
-              destination: EmptyView()) {
-                NearLocationLabelView(magnitude: $areaRange)
-              }
-              .navigationTitle(Text(NSLocalizedString("Near Location", comment: "neighborhood")))
-              .navigationBarTitleDisplayMode(.inline)
-              .foregroundColor(.black)
+            NearLocationLabelView(magnitude: $areaRange)
           }
           .padding(.bottom, 5)
-//          Text("선택한 범위의 게시물만 볼 수 있어요.")
           Text(NSLocalizedString("You can see only the selected range of posts.", comment: "readRange"))
             .font(.caption)
             .foregroundColor(.secondary)
           VStack {
             //MARK: - Slider
-            //인접한 곳에 놓으면 자동으로 정수에 맞춰지기
             SliderView(sliderValue: $areaRange, sliderChanged: $sliderChanged)
               .animation(.easeOut)
-
             HStack {
               Text(NSLocalizedString("My Location", comment: "mylocation"))
-//              Text("내 동네")
               Spacer()
               Text(NSLocalizedString("Near Location", comment: "neighborhood"))
-//              Text("근처동네")
             }
             .font(.caption)
             .foregroundColor(.gray)

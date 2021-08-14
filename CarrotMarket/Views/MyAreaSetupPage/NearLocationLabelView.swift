@@ -43,6 +43,7 @@ struct NearLocationLabelView: View {
         Text(NSLocalizedString("Near Location \(nearLocation.count)", comment: "neighborhood"))
           .fontWeight(.bold)
           .underline()
+          .foregroundColor(.black)
       }
     }
   }

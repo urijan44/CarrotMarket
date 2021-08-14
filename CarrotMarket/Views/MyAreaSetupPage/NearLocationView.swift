@@ -8,16 +8,36 @@
 import SwiftUI
 
 struct NearLocationView: View {
+  @Environment(\.presentationMode) var presentationMode
   var nearLocation: [String]
-
+  
   var body: some View {
-    ScrollView {
-      ForEach(nearLocation, id: \.self) { legal in
-        DongView(dong: legal)
-          .padding(4)
+    VStack {
+      ZStack {
+        HStack{
+          Button {
+            presentationMode.wrappedValue.dismiss()
+          } label: {
+            Image(systemName: "arrow.backward")
+              .foregroundColor(.black)
+          }
+          .padding(.leading)
+          Spacer()
+        }
+        Text(NSLocalizedString("Near Location \(nearLocation.count)", comment: "neighborhood"))
       }
+      Divider()
+      ScrollView {
+        ForEach(nearLocation, id: \.self) { legal in
+          DongView(dong: legal)
+            .padding(4)
+        }
+        .padding(.leading)
+      }
+      .padding(.top, 5)
+      .navigationBarTitleDisplayMode(.inline)
+      .navigationBarHidden(true)
     }
-    .padding(.top, 5)
   }
 }
 
