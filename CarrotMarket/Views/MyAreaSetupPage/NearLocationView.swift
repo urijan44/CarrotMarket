@@ -24,7 +24,7 @@ struct NearLocationView: View {
           .padding(.leading)
           Spacer()
         }
-        Text(NSLocalizedString("Near Location \(nearLocation.count)", comment: "neighborhood"))
+        Text(String(format: NSLocalizedString("Near Location %d", comment: "neighborhoodPlusCount"), nearLocation.count))
       }
       Divider()
       ScrollView {

@@ -41,7 +41,7 @@ struct NearLocationLabelView: View {
   var body: some View {
     HStack {
       NavigationLink(destination: NearLocationView(nearLocation: nearLocation)) {
-        Text(NSLocalizedString("Near Location \(nearLocation.count)", comment: "neighborhood"))
+        Text(String(format: NSLocalizedString("Near Location %d", comment: "neighborhoodPlusCount"), nearLocation.count))
           .fontWeight(.bold)
           .underline()
           .foregroundColor(.black)
