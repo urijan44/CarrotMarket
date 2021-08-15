@@ -5,6 +5,7 @@
 <p><img src="ReedMeSource/SearchField.gif" width="200"></p>
 <p>- 입력창을 통해 원하는 지역만 검색할 수 있습니다. 시, 구, 동 모두 검색 가능</p>
 <p>- 'Search by current location'을 통해 현재 위치를 기준으로 가장 가까운 지역순으로 정렬해서 보여줍니다.</p>
+<p>- 주소 데이터는 별도의 모듈에서 만들어 진 뒤 JSON 데이터로 저장되어 있습니다. 본 프로젝트에는 포함하지 않았습니다.</p>
 <p><img src="ReedMeSource/AtLeastOne.gif" width="200"></p>
 <p>- 지역을 하나도 선택 하지 않았을 때</p>
 
