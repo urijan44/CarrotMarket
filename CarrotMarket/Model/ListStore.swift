@@ -11,11 +11,7 @@ class ListStore: ObservableObject {
   @Published var storedLists: [[AddressModel]] = []
   
   init() throws {
-    do {
-      try load()
-    } catch {
-      throw error
-    }
+    storedLists = []
   }
   
   init(withCheck: Bool) throws {
