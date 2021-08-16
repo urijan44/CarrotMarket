@@ -1,5 +1,14 @@
 # 당근마켓 내 동네 설정하기 화면 구현
 
+## 사용 기술
+<ul>
+  <li>Swift</li>
+  <li>SwiftUI</li>
+  <li>CoreLocation</li>
+  <li>REST API Networking</li>
+  <li>Combine</li>
+ </ul>
+
 ## 지역 검색, 지역 리스트
 
 <p><img src="ReedMeSource/SearchField.gif" width="200"></p>
